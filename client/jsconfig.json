@@ -1,6 +1,14 @@
 {
   "compilerOptions": {
+    // "baseUrl": "src",
+    // "paths": {
+    //   "@/*": ["*"]
+    // },
     "jsx": "react-jsx",
-    "checkJs": true
+    "module": "esnext",
+    "moduleResolution": "node",
+    "target": "esnext",
+    "allowSyntheticDefaultImports": true
   }
+  // "include": ["src"]
 }
