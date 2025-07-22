@@ -36,7 +36,7 @@ const CourseCard = ({ course }) => {
               />
             ))}
           </div>
-          <p className="text-gray-500">{course.courseRatings.length}</p>
+          <p className="text-gray-500">{course.courseRatings.length} Review</p>
         </div>
         <p className="text-base font-semibold text-gray-800">
           {currency}
