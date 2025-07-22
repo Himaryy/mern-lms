@@ -7,20 +7,8 @@
   font-family: Outfit;
 }
 
-/* @layer utilities {
-  .course-details-heading-small {
-    @apply text-[28px] leading-[44px];
+@layer utilities {
+  .customGrid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
-  .course-details-heading-large {
-    @apply text-[32px] leading-[48px];
-  }
-  .text-home-heading-small {
-    @apply text-3xl leading-[44px]; 
-  }
-  .text-home-heading-large {
-    @apply text-6xl leading-[56px];
-  }
-  .text-default {
-    @apply text-[15px] leading-[21px];
-  }
-} */
+}
