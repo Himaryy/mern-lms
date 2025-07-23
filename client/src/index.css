@@ -7,6 +7,56 @@
   font-family: Outfit;
 }
 
+@layer components {
+  .rich-text {
+    @apply text-gray-800 leading-relaxed;
+
+    h1 {
+      @apply text-3xl font-bold mt-8 mb-4;
+    }
+
+    h2 {
+      @apply text-2xl font-semibold mt-6 mb-3;
+    }
+
+    h3 {
+      @apply text-xl font-semibold mt-5 mb-2;
+    }
+
+    p {
+      @apply mb-4;
+    }
+
+    ul {
+      @apply list-disc pl-5 mb-4;
+    }
+
+    ol {
+      @apply list-decimal pl-5 mb-4;
+    }
+
+    a {
+      @apply text-blue-600 underline hover:text-blue-800;
+    }
+
+    blockquote {
+      @apply border-l-4 border-gray-300 pl-4 italic text-gray-500 mb-4;
+    }
+
+    img {
+      @apply rounded-lg my-4;
+    }
+
+    code {
+      @apply bg-gray-100 text-sm px-2 py-1 rounded;
+    }
+
+    strong {
+      @apply font-semibold;
+    }
+  }
+}
+
 @layer utilities {
   .customGrid {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -14,5 +64,17 @@
 
   .h-section-height {
     height: 500px;
+  }
+  .course-card {
+    width: 424px;
+  }
+  .shadow-card {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
   }
 }
