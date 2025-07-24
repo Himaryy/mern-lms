@@ -13,6 +13,8 @@ import MyCourses from "./pages/educator/MyCourses";
 import StudentsEnroll from "./pages/educator/StudentsEnroll";
 import Navbar from "./components/student/Navbar";
 
+import "quill/dist/quill.snow.css"; // Import Quill styles
+
 const App = () => {
   const isEducatorRoute = useMatch("/educator/*");
 
