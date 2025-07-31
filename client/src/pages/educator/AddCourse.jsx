@@ -1,7 +1,8 @@
 import Quill from "quill";
 import React, { useEffect, useRef, useState } from "react";
 import { assets } from "../../assets/assets";
-
+import uniqid from "uniqid";
+// 6:3923
 const AddCourse = () => {
   const quillRef = useRef(null);
   const editorRef = useRef(null);
@@ -20,6 +21,92 @@ const AddCourse = () => {
     isPreviewFree: false,
   });
 
+  const handleAddChapter = (action, chapterId) => {
+    if (action === "add") {
+      const title = prompt("Enter Chapter Title:");
+
+      if (title) {
+        const newChapter = {
+          chapterId: uniqid(),
+          chapterTitle: title,
+          chapterContent: [],
+          collapsed: false,
+          chapterOrder:
+            chapters.length > 0 ? chapters.slice(-1)[0].chapterOrder + 1 : 1,
+        };
+
+        setChapters([...chapters, newChapter]);
+        // console.log("Current chapters:", chapters);
+      }
+    } else if (action === "remove") {
+      // console.log("Removing chapterId:", chapterId);
+
+      setChapters(
+        chapters.filter((chapter) => chapter.chapterId !== chapterId)
+      );
+    } else if (action === "toggle") {
+      setChapters(
+        chapters.map((chapter) =>
+          chapter.chapterId === chapterId
+            ? { ...chapter, collapsed: !chapter.collapsed }
+            : chapter
+        )
+      );
+    }
+  };
+
+  const handleLecture = (action, chapterId, lectureIndex) => {
+    if (action === "add") {
+      setCurrentChapterId(chapterId);
+      setShowPopup(true);
+    } else if (action === "remove") {
+      setChapters(
+        chapters.map((chapter) => {
+          if (chapter.chapterId === chapterId) {
+            return {
+              ...chapter,
+              chapterContent: chapter.chapterContent.filter(
+                (_, index) => index !== lectureIndex
+              ),
+            };
+          }
+          return chapter;
+        })
+      );
+    }
+  };
+
+  const addLecture = () => {
+    setChapters(
+      chapters.map((chapter) => {
+        if (chapter.chapterId === currentChapterId) {
+          const newLecture = {
+            ...lectureDetails,
+            lectureOrder:
+              chapter.chapterContent.length > 0
+                ? chapter.chapterContent.slice(-1)[0].lectureOrder + 1
+                : 1,
+            lectureId: uniqid(),
+          };
+          chapter.chapterContent.push(newLecture);
+        }
+        return chapter;
+      })
+    );
+
+    setShowPopup(false);
+    setLectureDetails({
+      lectureTitle: "",
+      lectureDuration: "",
+      lectureUrl: "",
+      isPreviewFree: false,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+
   useEffect(() => {
     if (!quillRef.current && editorRef.current) {
       quillRef.current = new Quill(editorRef.current, {
@@ -33,6 +120,7 @@ const AddCourse = () => {
       <div className="flex-1 h-screen overflow-y-scroll flex flex-col items-start justify-between md:p-8 md:pb-0 pt-8 pb-0">
         <form
           action=""
+          onSubmit={handleSubmit}
           className="flex md:flex-row flex-col gap-5 w-full text-gray-500 md:p-8 pb-0"
         >
           <div className="flex flex-col flex-1 min-w-[250px] gap-4">
@@ -91,6 +179,9 @@ const AddCourse = () => {
                         className={`mr-2 cursor-pointer transition-all ${
                           chapter.collapsed && "-rotate-90"
                         }`}
+                        onClick={() =>
+                          handleAddChapter("toggle", chapter.chapterId)
+                        }
                       />
                       <span className="font-semibold">
                         {chapterIndex + 1}. {chapter.chapterTitle}
@@ -103,6 +194,9 @@ const AddCourse = () => {
                       src={assets.cross_icon}
                       alt="Cross Icon"
                       className="cursor-pointer"
+                      onClick={() =>
+                        handleAddChapter("remove", chapter.chapterId)
+                      }
                     />
                   </div>
 
@@ -116,20 +210,32 @@ const AddCourse = () => {
                           <span>
                             {lectureIndex + 1}. {lecture.lectureTitle} -{" "}
                             {lecture.lectureDuration} mins -{" "}
-                            <a href={lecture.lectureUrl}>Link</a> -{" "}
-                            {lecture.isPreviewFree ? "Free Preview" : "Paid"}
+                            <a
+                              className="underline text-blue-500"
+                              href={lecture.lectureUrl}
+                            >
+                              Link
+                            </a>{" "}
+                            - {lecture.isPreviewFree ? "Free Preview" : "Paid"}
                           </span>
                           <img
                             src={assets.cross_icon}
                             alt="Cross Icon"
                             className="cursor-pointer"
+                            onClick={() =>
+                              handleLecture(
+                                "remove",
+                                chapter.chapterId,
+                                lectureIndex
+                              )
+                            }
                           />
                         </div>
                       ))}
 
                       <div
                         className="inline-flex bg-gray-100 p-2 rounded cursor-pointer mt-2"
-                        // onClick={() => handleAddLecture(chapterIndex)}
+                        onClick={() => handleLecture("add", chapter.chapterId)}
                       >
                         Add Lecture
                       </div>
@@ -142,14 +248,14 @@ const AddCourse = () => {
             {/* ✅ ADD CHAPTER BUTTON */}
             <div
               className="flex justify-center items-center bg-blue-100 p-2 rounded-lg cursor-pointer"
-              // onClick={handleAddChapter}
+              onClick={() => handleAddChapter("add")}
             >
               + Add Chapter
             </div>
 
             {/* ✅ POPUP ADD LECTURE */}
             {showPopup && (
-              <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+              <div className="fixed inset-0 flex items-center justify-center bg-gray-400/70">
                 <div className="bg-white text-gray-700 rounded p-4 relative w-full max-w-80">
                   <h2 className="text-lg font-semibold mb-4">Add Lecture</h2>
 
@@ -216,6 +322,7 @@ const AddCourse = () => {
                   <button
                     type="button"
                     className="w-full bg-blue-400 text-white px-4 py-2 rounded"
+                    onClick={addLecture}
                   >
                     Add
                   </button>
