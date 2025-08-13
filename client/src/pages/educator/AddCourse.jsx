@@ -2,7 +2,7 @@ import Quill from "quill";
 import React, { useEffect, useRef, useState } from "react";
 import { assets } from "../../assets/assets";
 import uniqid from "uniqid";
-// 6:3923
+// 6:5138
 const AddCourse = () => {
   const quillRef = useRef(null);
   const editorRef = useRef(null);
