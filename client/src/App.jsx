@@ -12,6 +12,7 @@ import AddCourse from "./pages/educator/AddCourse";
 import MyCourses from "./pages/educator/MyCourses";
 import StudentsEnroll from "./pages/educator/StudentsEnroll";
 import Navbar from "./components/student/Navbar";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import "quill/dist/quill.snow.css"; // Import Quill styles
 import { ToastContainer } from "react-toastify";
@@ -41,6 +42,8 @@ const App = () => {
           <Route path="student-enrolled" element={<StudentsEnroll />} />
         </Route>
       </Routes>
+
+      <SpeedInsights />
     </div>
   );
 };
