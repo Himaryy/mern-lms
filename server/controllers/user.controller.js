@@ -183,7 +183,7 @@ export const addUserRating = async (req, res) => {
 
     const course = await Course.findById(courseId);
 
-    if (!courseId || !userId || !rating || !rating < 1 || !rating > 5) {
+    if (!courseId || !userId || !rating || rating < 1 || rating > 5) {
       return res.json({
         success: false,
         message: "Invalid Details",

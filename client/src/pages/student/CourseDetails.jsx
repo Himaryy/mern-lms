@@ -246,7 +246,13 @@ const CourseDetails = () => {
               iframeClassName="w-full aspect-video"
             />
           ) : (
-            <img src={courseData.courseThumbnail} alt="Course Thumbnail" />
+            <div className="w-full aspect-video">
+              <img
+                src={courseData.courseThumbnail}
+                alt="Course Thumbnail"
+                className="w-full h-full object-cover"
+              />
+            </div>
           )}
           <div className="p-5">
             <div className="flex items-center gap-2">
